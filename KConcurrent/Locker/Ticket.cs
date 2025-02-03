@@ -3,6 +3,9 @@
     public readonly struct Ticket
     {
         #region Properties
+        /// <summary>
+        /// True if ticket enter the TicketLock.
+        /// </summary>
         public readonly bool IsAccept;
         private readonly TaskCompletionSource? taskSource;
         #endregion
@@ -21,6 +24,9 @@
         #endregion
 
         #region Method
+        /// <summary>
+        /// Releases the TicketLock object.
+        /// </summary>
         public readonly void Release()
         {
             taskSource?.TrySetResult();

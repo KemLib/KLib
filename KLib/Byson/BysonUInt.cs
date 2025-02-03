@@ -17,11 +17,20 @@
             Power_1 = 256,
             Power_2 = Power_1 * Power_1,
             Power_3 = Power_2 * Power_1;
-        public const int LENGTH_MIN = BysonInt.LENGTH_MIN,
-            LENGTH_MAX = BysonInt.LENGTH_MAX;
+        /// <summary>
+        /// minimum byte count.
+        /// </summary>
+        public const int LENGTH_MIN = BysonInt.LENGTH_MIN;
+        /// <summary>
+        /// maximum byte count.
+        /// </summary>
+        public const int LENGTH_MAX = BysonInt.LENGTH_MAX;
         #endregion
 
         #region Method
+        /// <summary>
+        /// Try get required number byte in array.
+        /// </summary>
         public static bool TryGetCount(byte[]? data, int offset, out int count)
         {
             if (data == null || offset < 0 || offset >= data.Length)
@@ -50,6 +59,9 @@
             //
             return true;
         }
+        /// <summary>
+        /// Try convert byte array to int.
+        /// </summary>
         public static bool TryConvert(byte[]? data, int offset, out uint value, out int count)
         {
             if (data == null || offset < 0 || offset >= data.Length)
@@ -125,6 +137,9 @@
             }
             return true;
         }
+        /// <summary>
+        /// Convert int to byte array.
+        /// </summary>
         public static byte[] Convert(uint value)
         {
             if (value == 0)

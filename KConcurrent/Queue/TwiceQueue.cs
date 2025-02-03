@@ -14,6 +14,9 @@ namespace KConcurrent.Queue
             indexOut;
         private readonly TicketLock lockQueueIn;
 
+        /// <summary>
+        /// Gets the number of elements contained in the Queue<T>.
+        /// </summary>
         public int Count => indexIn.Value;
         #endregion
 
@@ -29,7 +32,7 @@ namespace KConcurrent.Queue
 
         #region Method
         /// <summary>
-        /// 
+        /// Create new QueueIn
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
@@ -55,7 +58,7 @@ namespace KConcurrent.Queue
             }
         }
         /// <summary>
-        /// 
+        /// Create new QueueIn
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
@@ -81,6 +84,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Try create new QueueIn
+        /// </summary>
         public bool TryCreateQueueIn([NotNullWhen(true)] out IQueueIn<T>? queueIn)
         {
             Ticket ticket = lockQueueIn.Wait();
@@ -134,6 +140,9 @@ namespace KConcurrent.Queue
         #endregion
 
         #region Out Dequeue
+        /// <summary>
+        /// Removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public T[] DequeueAll()
         {
             Ticket ticket = lockQueueIn.Wait();
@@ -170,6 +179,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public async Task<T[]> DequeueAllAsync(CancellationToken cancellationToken = default)
         {
             Ticket ticket = await lockQueueIn.WaitAsync(cancellationToken);
@@ -206,6 +218,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Try removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public bool TryDequeueAll([NotNullWhen(true)] out T[]? values)
         {
             Ticket ticket = lockQueueIn.Wait();
@@ -252,6 +267,9 @@ namespace KConcurrent.Queue
         #endregion
 
         #region Out Clear
+        /// <summary>
+        /// Removes all objects from the Queue<T>.
+        /// </summary>
         public T[] Clear()
         {
             Ticket ticket = lockQueueIn.Wait();
@@ -283,6 +301,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Removes all objects from the Queue<T>.
+        /// </summary>
         public async Task<T[]> ClearAsync(CancellationToken cancellationToken = default)
         {
             Ticket ticket = await lockQueueIn.WaitAsync(cancellationToken);
@@ -314,6 +335,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Try removes all objects from the Queue<T>.
+        /// </summary>
         public bool TryClear([NotNullWhen(true)] out T[]? values)
         {
             Ticket ticket = lockQueueIn.Wait();

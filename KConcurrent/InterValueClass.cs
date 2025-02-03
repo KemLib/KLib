@@ -1,10 +1,16 @@
 ﻿namespace KConcurrent
 {
+    /// <summary>
+    /// Provides atomic operations for variables that are shared by multiple threads.
+    /// </summary>
     public struct InterValueClass<T> where T : class
     {
         #region Properties
         private T? value;
 
+        /// <summary>
+        /// Get or set current value
+        /// </summary>
         public T? Value
         {
             get => Interlocked.CompareExchange(ref value, null, null);
@@ -24,10 +30,20 @@
         #endregion
 
         #region Method
+        /// <summary>
+        /// Sets a variable to a specified value as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <returns>current value</returns>
         public T? Exchange(T? value)
         {
             return Interlocked.Exchange(ref this.value, value);
         }
+        /// <summary>
+        /// try sets a variable to a specified value as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <returns>true if current value is different from new value</returns>
         public bool TryExchange(T? value)
         {
             T? oldValue = Interlocked.Exchange(ref this.value, value);
@@ -35,17 +51,35 @@
                 return value is null;
             return !oldValue.Equals(value);
         }
-        public bool TryExchange(T? value, out T? oldValue)
+        /// <summary>
+        /// try sets a variable to a specified value as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <param name="currentValue">current value</param>
+        /// <returns>true if current value is different from new value</returns>
+        public bool TryExchange(T? value, out T? currentValue)
         {
-            oldValue = Interlocked.Exchange(ref this.value, value);
-            if (oldValue is null)
+            currentValue = Interlocked.Exchange(ref this.value, value);
+            if (currentValue is null)
                 return value is null;
-            return !oldValue.Equals(value);
+            return !currentValue.Equals(value);
         }
+        /// <summary>
+        /// Compares two values for equality and, if they are equal, replaces the first value, as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <param name="comparand">comparand value</param>
+        /// <returns>current value</returns>
         public T? CompareExchange(T? value, T? comparand)
         {
             return Interlocked.CompareExchange(ref this.value, value, comparand);
         }
+        /// <summary>
+        /// Try compares two values for equality and, if they are equal, replaces the first value, as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <param name="comparand">comparand value</param>
+        /// <returns>true if current value equals comparand value and current value is different from new value</returns>
         public bool TryCompareExchange(T? value, T? comparand)
         {
             T? oldValue = Interlocked.CompareExchange(ref this.value, value, comparand);
@@ -54,13 +88,20 @@
             else
                 return oldValue.Equals(comparand) && !oldValue.Equals(value);
         }
-        public bool TryCompareExchange(T? value, T? comparand, out T? oldValue)
+        /// <summary>
+        /// Try compares two values for equality and, if they are equal, replaces the first value, as an atomic operation.
+        /// </summary>
+        /// <param name="value">new value</param>
+        /// <param name="comparand">comparand value</param>
+        /// <param name="currentValue">current value</param>
+        /// <returns>true if current value equals comparand value and current value is different from new value</returns>
+        public bool TryCompareExchange(T? value, T? comparand, out T? currentValue)
         {
-            oldValue = Interlocked.CompareExchange(ref this.value, value, comparand);
-            if (oldValue is null)
+            currentValue = Interlocked.CompareExchange(ref this.value, value, comparand);
+            if (currentValue is null)
                 return comparand is null && value is not null;
             else
-                return oldValue.Equals(comparand) && !oldValue.Equals(value);
+                return currentValue.Equals(comparand) && !currentValue.Equals(value);
         }
         #endregion
 

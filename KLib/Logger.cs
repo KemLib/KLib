@@ -1,6 +1,6 @@
 ﻿namespace KLib
 {
-    public class Logger : ILogger
+    public class Logger
     {
         #region Properties
         private readonly Action<LogData> onLog;
@@ -15,13 +15,56 @@
         #endregion
 
         #region Method
-        public ILogger? CreateLogger()
+        public Logger? CreateLogger()
         {
             return new Logger(onLog);
         }
+        public void LogMessage(string? source = null, string? title = null, string? message = null)
+        {
+            LogData log = new(LogType.Message, source, title, message);
+            try
+            {
+                onLog?.Invoke(log);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void LogWarning(string? source = null, string? title = null, string? message = null)
+        {
+            LogData log = new(LogType.Warning, source, title, message);
+            try
+            {
+                onLog?.Invoke(log);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        public void LogError(string? source = null, string? title = null, string? message = null)
+        {
+            LogData log = new(LogType.Error, source, title, message);
+            try
+            {
+                onLog?.Invoke(log);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
         public void Log(LogData log)
         {
-            onLog?.Invoke(log);
+            try
+            {
+                onLog?.Invoke(log);
+            }
+            catch (Exception)
+            {
+
+            }
         }
         #endregion
     }

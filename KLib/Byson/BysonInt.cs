@@ -22,11 +22,20 @@
             Power_1 = 256,
             Power_2 = Power_1 * Power_1,
             Power_3 = Power_2 * Power_1;
-        public const int LENGTH_MIN = 1,
-            LENGTH_MAX = 5;
+        /// <summary>
+        /// minimum byte count.
+        /// </summary>
+        public const int LENGTH_MIN = 1;
+        /// <summary>
+        /// maximum byte count.
+        /// </summary>
+        public const int LENGTH_MAX = 5;
         #endregion
 
         #region Method
+        /// <summary>
+        /// Try get required number byte in array.
+        /// </summary>
         public static bool TryGetCount(byte[]? data, int offset, out int count)
         {
             if (data == null || offset < 0 || offset >= data.Length)
@@ -76,6 +85,9 @@
             }
             return true;
         }
+        /// <summary>
+        /// Try convert byte array to int.
+        /// </summary>
         public static bool TryConvert(byte[]? data, int offset, out int value, out int count)
         {
             if (data == null || offset < 0 || offset >= data.Length)
@@ -199,6 +211,9 @@
                 value = -value;
             return true;
         }
+        /// <summary>
+        /// Convert int to byte array.
+        /// </summary>
         public static byte[] Convert(int value)
         {
             if (value == int.MinValue)

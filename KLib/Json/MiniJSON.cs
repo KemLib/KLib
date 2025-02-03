@@ -34,22 +34,6 @@ namespace KLib.Json
 {
     public static class MiniJson
     {
-        private enum TOKEN
-        {
-            NONE,
-            CURLY_OPEN,
-            CURLY_CLOSE,
-            SQUARED_OPEN,
-            SQUARED_CLOSE,
-            COLON,
-            COMMA,
-            STRING,
-            NUMBER,
-            TRUE,
-            FALSE,
-            NULL
-        }
-
         #region Properties
         private const string STRING_NULL = "null",
             STRING_BOOL_TRUE = "true",
@@ -106,9 +90,9 @@ namespace KLib.Json
         public const string DEFAULT_INDENT_TEXT = "  ";
         #endregion
 
-        #region Deserialize
+        #region Method
         /// <summary>
-        /// Parses the string json into a value
+        /// Parses the string json into a value.
         /// </summary>
         /// <param name="json">A JSON string.</param>
         /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
@@ -126,7 +110,7 @@ namespace KLib.Json
             return value;
         }
         /// <summary>
-        /// Parses the string json into a value
+        /// Parses the string json into a value.
         /// </summary>
         /// <param name="json">A JSON string.</param>
         /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
@@ -145,10 +129,25 @@ namespace KLib.Json
             }
             return value != null;
         }
-        private static bool IsWordBreak(char c)
+
+        /// <summary>
+        /// Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string.
+        /// </summary>
+        /// <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
+        /// <param name="pretty">A boolean to indicate whether or not JSON should be prettified, default is false.</param>
+        /// <param name="indentText">A string to ibe used as indentText, default is 2 spaces.</param>
+        /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+        public static string Serialize(object? obj, bool pretty = DEFAULT_PRETTY, string indentText = DEFAULT_INDENT_TEXT)
         {
-            return Char.IsWhiteSpace(c) || STRING_WORD_BREAK.Contains(c);
+            if (obj == null)
+                return DEFAULT_JSON;
+            //
+            StringBuilder builder = new();
+            SerializeValue(builder, pretty, indentText, obj, 0);
+            return builder.ToString();
         }
+        #endregion
+        #region Deserialize
         private static Dictionary<string, object?>? ParseObject(StringReader reader)
         {
             Dictionary<string, object?> table = [];
@@ -410,25 +409,13 @@ namespace KLib.Json
                 _ => TOKEN.NONE,
             };
         }
+        private static bool IsWordBreak(char c)
+        {
+            return Char.IsWhiteSpace(c) || STRING_WORD_BREAK.Contains(c);
+        }
         #endregion
 
         #region Serializer
-        /// <summary>
-        /// Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
-        /// </summary>
-        /// <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
-        /// <param name="pretty">A boolean to indicate whether or not JSON should be prettified, default is false.</param>
-        /// <param name="indentText">A string to ibe used as indentText, default is 2 spaces.</param>
-        /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
-        public static string Serialize(object? obj, bool pretty = DEFAULT_PRETTY, string indentText = DEFAULT_INDENT_TEXT)
-        {
-            if (obj == null)
-                return DEFAULT_JSON;
-            //
-            StringBuilder builder = new();
-            SerializeValue(builder, pretty, indentText, obj, 0);
-            return builder.ToString();
-        }
         private static void SerializeValue(StringBuilder builder, bool pretty, string indentText, object? value, int indent)
         {
 

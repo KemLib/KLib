@@ -22,6 +22,9 @@
         #endregion
 
         #region Wait
+        /// <summary>
+        /// Blocks the current thread until it can enter the TicketLock.
+        /// </summary>
         public Ticket Wait()
         {
             TaskCompletionSource taskSource = new();
@@ -32,6 +35,9 @@
             task.Wait();
             return new Ticket(taskSource);
         }
+        /// <summary>
+        /// Asynchronously waits to enter the TicketLock.
+        /// </summary>
         public async Task<Ticket> WaitAsync()
         {
             TaskCompletionSource taskSource = new();
@@ -42,6 +48,9 @@
             await task;
             return new Ticket(taskSource);
         }
+        /// <summary>
+        /// Asynchronously waits to enter the TicketLock.
+        /// </summary>
         public async Task<Ticket> WaitAsync(CancellationToken cancellationToken)
         {
             TaskCompletionSource taskSource = new();

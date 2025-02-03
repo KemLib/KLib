@@ -18,6 +18,9 @@
         #endregion
 
         #region Method
+        /// <summary>
+        /// Blocks the current thread until it can enter the Int32Lock.
+        /// </summary>
         public void Enter()
         {
             int newValueA = Interlocked.Add(ref valueA, 1);
@@ -30,6 +33,9 @@
                 spinWait.SpinOnce();
             } while (newValueA != Interlocked.CompareExchange(ref valueB, 0, 0));
         }
+        /// <summary>
+        /// Asynchronously waits to enter the Int32Lock.
+        /// </summary>
         public async Task EnterAsync()
         {
             int newValueA = Interlocked.Add(ref valueA, 1);
@@ -41,6 +47,9 @@
                 await Task.Delay(ENTER_WAIT_TIME);
             } while (newValueA != Interlocked.CompareExchange(ref valueB, 0, 0));
         }
+        /// <summary>
+        /// Releases the Int32Lock.
+        /// </summary>
         public void Exit()
         {
             Interlocked.Add(ref valueB, 1);

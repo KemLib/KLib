@@ -13,7 +13,9 @@ namespace KConcurrent.Queue
         private readonly TicketLock lockObject;
         private InterValueInt interCount;
         private InterValueBool isAvailable;
-
+        /// <summary>
+        /// Gets the number of elements contained in the Queue<T>.
+        /// </summary>
         public int Count => interCount.Value;
 
         public bool IsAvailable => isAvailable;
@@ -144,7 +146,7 @@ namespace KConcurrent.Queue
 
         #region Dequeue
         /// <summary>
-        /// 
+        /// Removes and returns the object at the beginning of the Queue<T>.
         /// </summary>
         /// <exception cref="Exception"></exception>
         /// <exception cref="InvalidOperationException"></exception>
@@ -167,7 +169,7 @@ namespace KConcurrent.Queue
             }
         }
         /// <summary>
-        /// 
+        /// Removes and returns the object at the beginning of the Queue<T>.
         /// </summary>
         /// <exception cref="OperationCanceledException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
@@ -189,6 +191,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Try removes and returns the object at the beginning of the Queue<T>.
+        /// </summary>
         public bool TryDequeue(out T? value)
         {
             Ticket ticket = lockObject.Wait();
@@ -221,6 +226,9 @@ namespace KConcurrent.Queue
         #endregion
 
         #region Dequeue All
+        /// <summary>
+        /// Removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public T[] DequeueAll()
         {
             Ticket ticket = lockObject.Wait();
@@ -242,6 +250,9 @@ namespace KConcurrent.Queue
             ticket.Release();
             return values;
         }
+        /// <summary>
+        /// Removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public async Task<T[]> DequeueAllAsync(CancellationToken cancellationToken = default)
         {
             Ticket ticket = await lockObject.WaitAsync(cancellationToken);
@@ -263,6 +274,9 @@ namespace KConcurrent.Queue
             ticket.Release();
             return values;
         }
+        /// <summary>
+        /// Try removes and copies the object at the beginning of Queue List<T> to a new array.
+        /// </summary>
         public bool TryDequeueAll([NotNullWhen(true)] out T[]? values)
         {
             Ticket ticket = lockObject.Wait();

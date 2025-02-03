@@ -6,20 +6,23 @@
 
         #endregion
 
-        #region TryConvert
-        public static bool TryConvert(byte[]? bytes, int offset, [NotNullWhen(true)] out byte[]? datas, out int count)
+        #region TryDecode
+        /// <summary>
+        /// Try decode byson to data.
+        /// </summary>
+        public static bool TryDecode(byte[]? byson, int offset, [NotNullWhen(true)] out byte[]? plainData, out int count)
         {
-            if (bytes == null || bytes.Length == 0)
+            if (byson == null || byson.Length == 0)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
             //
             count = 0;
-            if (!BysonInt.TryConvert(bytes, offset, out int length, out int readCount) || length < 0)
+            if (!BysonInt.TryConvert(byson, offset, out int length, out int readCount) || length < 0)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
@@ -28,51 +31,54 @@
             //
             if (length == 0)
             {
-                datas = [];
+                plainData = [];
                 return true;
             }
             //
-            if (offset + length > bytes.Length)
+            if (offset + length > byson.Length)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
             //
-            datas = new byte[length];
+            plainData = new byte[length];
             for (int i = 0; i < length; i++)
-                datas[i] = bytes[offset + i];
+                plainData[i] = byson[offset + i];
             count += length;
             //
             return true;
         }
-        public static bool TryConvert(byte[]? bytes, int offset, [NotNullWhen(true)] out byte[][]? datas, out int count)
+        /// <summary>
+        /// Try decode byson to data collection.
+        /// </summary>
+        public static bool TryDecode(byte[]? byson, int offset, [NotNullWhen(true)] out byte[][]? plainData, out int count)
         {
-            if (bytes == null || bytes.Length == 0)
+            if (byson == null || byson.Length == 0)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
             //
             count = 0;
-            if (!BysonInt.TryConvert(bytes, offset, out int capacity, out int readCount) || capacity < 0)
+            if (!BysonInt.TryConvert(byson, offset, out int capacity, out int readCount) || capacity < 0)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
             offset += readCount;
             count += readCount;
             //
-            datas = new byte[capacity][];
-            int bytesLength = bytes.Length,
+            plainData = new byte[capacity][];
+            int bytesLength = byson.Length,
                 index = 0;
             while (index < capacity && offset < bytesLength)
             {
-                if (!BysonInt.TryConvert(bytes, offset, out int length, out readCount) || length < 0)
+                if (!BysonInt.TryConvert(byson, offset, out int length, out readCount) || length < 0)
                 {
-                    datas = null;
+                    plainData = null;
                     count = 0;
                     return false;
                 }
@@ -81,21 +87,21 @@
                 //
                 if (length == 0)
                 {
-                    datas[index] = [];
+                    plainData[index] = [];
                 }
                 else
                 {
                     if (offset + length > bytesLength)
                     {
-                        datas = null;
+                        plainData = null;
                         count = 0;
                         return false;
                     }
                     //
                     byte[] tmp = new byte[length];
                     for (int i = 0; i < length; i++)
-                        tmp[i] = bytes[offset + i];
-                    datas[index] = tmp;
+                        tmp[i] = byson[offset + i];
+                    plainData[index] = tmp;
                     offset += length;
                     count += length;
                 }
@@ -105,7 +111,7 @@
             //
             if (index < capacity)
             {
-                datas = null;
+                plainData = null;
                 count = 0;
                 return false;
             }
@@ -114,131 +120,116 @@
         }
         #endregion
 
-        #region Convert
-        public static void Convert(byte[]? datas, out byte[] bytes)
+        #region Encode
+        /// <summary>
+        /// Encode data to byson.
+        /// </summary>
+        public static void Encode(byte[]? plainData, out byte[] byson)
         {
-            if (datas == null || datas.Length == 0)
+            if (plainData == null || plainData.Length == 0)
             {
-                bytes = BysonInt.Convert(0);
+                byson = BysonInt.Convert(0);
                 return;
             }
             //
-            byte[] byLength = BysonInt.Convert(datas.Length);
-            bytes = new byte[byLength.Length + datas.Length];
-            byLength.CopyTo(bytes, 0);
-            datas.CopyTo(bytes, byLength.Length);
+            byte[] byLength = BysonInt.Convert(plainData.Length);
+            byson = new byte[byLength.Length + plainData.Length];
+            byLength.CopyTo(byson, 0);
+            plainData.CopyTo(byson, byLength.Length);
         }
-        public static void Convert(byte[]? datas, List<byte> bytes, out int length)
+        /// <summary>
+        /// Encode data to byson.
+        /// </summary>
+        public static void Encode(byte[]? plainData, List<byte> byson)
         {
-            if (datas == null || datas.Length == 0)
+            if (plainData == null || plainData.Length == 0)
             {
-                bytes.AddRange(BysonInt.Convert(0));
-                length = 1;
+                byson.AddRange(BysonInt.Convert(0));
                 return;
             }
             //
-            length = 0;
-            byte[] byLength = BysonInt.Convert(datas.Length);
-            bytes.AddRange(byLength);
-            if (datas.Length > 0)
-            {
-                bytes.AddRange(datas);
-                length += byLength.Length + datas.Length;
-            }
-            else
-                length += byLength.Length;
+            byte[] byLength = BysonInt.Convert(plainData.Length);
+            byson.AddRange(byLength);
+            if (plainData.Length > 0)
+                byson.AddRange(plainData);
         }
-        public static void Convert(ICollection<byte>? datas, out byte[] bytes)
+        /// <summary>
+        /// Encode data to byson.
+        /// </summary>
+        public static void Encode(ICollection<byte>? plainData, out byte[] byson)
         {
-            if (datas == null || datas.Count == 0)
+            if (plainData == null || plainData.Count == 0)
             {
-                bytes = BysonInt.Convert(0);
+                byson = BysonInt.Convert(0);
                 return;
             }
             //
-            byte[] byLength = BysonInt.Convert(datas.Count);
-            bytes = new byte[byLength.Length + datas.Count];
-            byLength.CopyTo(bytes, 0);
-            datas.CopyTo(bytes, byLength.Length);
+            byte[] byLength = BysonInt.Convert(plainData.Count);
+            byson = new byte[byLength.Length + plainData.Count];
+            byLength.CopyTo(byson, 0);
+            plainData.CopyTo(byson, byLength.Length);
         }
-        public static void Convert(ICollection<byte>? datas, List<byte> bytes, out int length)
+        /// <summary>
+        /// Encode data to byson.
+        /// </summary>
+        public static void Encode(ICollection<byte>? plainData, List<byte> byson)
         {
-            if (datas == null || datas.Count == 0)
+            if (plainData == null || plainData.Count == 0)
             {
-                bytes.AddRange(BysonInt.Convert(0));
-                length = 1;
+                byson.AddRange(BysonInt.Convert(0));
                 return;
             }
             //
-            length = 0;
-            //
-            byte[] byLength = BysonInt.Convert(datas.Count);
-            bytes.AddRange(byLength);
-            if (datas.Count > 0)
-            {
-                bytes.AddRange(datas);
-                length += byLength.Length + datas.Count;
-            }
-            else
-                length += byLength.Length;
+            byte[] byLength = BysonInt.Convert(plainData.Count);
+            byson.AddRange(byLength);
+            if (plainData.Count > 0)
+                byson.AddRange(plainData);
         }
         #endregion
 
-        #region Convert Collection
-        public static void Convert(byte[][]? datas, List<byte> bytes, out int length)
+        #region Encode Collection
+        /// <summary>
+        /// Encode data array to byson.
+        /// </summary>
+        public static void Encode(byte[][]? plainData, List<byte> byson)
         {
-            if (datas == null || datas.Length == 0)
+            if (plainData == null || plainData.Length == 0)
             {
-                bytes.AddRange(BysonInt.Convert(0));
-                length = 1;
+                byson.AddRange(BysonInt.Convert(0));
                 return;
             }
             //
-            length = 0;
+            byte[] byCount = BysonInt.Convert(plainData.Length);
+            byson.AddRange(byCount);
             //
-            byte[] byCount = BysonInt.Convert(datas.Length);
-            bytes.AddRange(byCount);
-            length += byCount.Length;
-            //
-            foreach (byte[] data in datas)
+            foreach (byte[] data in plainData)
             {
                 byte[] byLength = BysonInt.Convert(data.Length);
-                bytes.AddRange(byLength);
+                byson.AddRange(byLength);
                 if (data.Length > 0)
-                {
-                    bytes.AddRange(data);
-                    length += byLength.Length + data.Length;
-                }
-                else
-                    length += byLength.Length;
+                    byson.AddRange(data);
             }
         }
-        public static void Convert(ICollection<byte[]>? datas, List<byte> bytes, out int length)
+        /// <summary>
+        /// Encode data collection to byson.
+        /// </summary>
+        public static void Encode(ICollection<byte[]>? plainData, List<byte> byson)
         {
-            if (datas == null || datas.Count == 0)
+            if (plainData == null || plainData.Count == 0)
             {
-                bytes.AddRange(BysonInt.Convert(0));
-                length = 1;
+                byson.AddRange(BysonInt.Convert(0));
                 return;
             }
             //
-            length = 0;
+            byte[] byCount = BysonInt.Convert(plainData.Count);
+            byson.AddRange(byCount);
             //
-            byte[] byCount = BysonInt.Convert(datas.Count);
-            bytes.AddRange(byCount);
-            length += byCount.Length;
-            //
-            foreach (byte[] data in datas)
+            foreach (byte[] data in plainData)
             {
                 byte[] byLength = BysonInt.Convert(data.Length);
-                bytes.AddRange(byLength);
+                byson.AddRange(byLength);
                 if (data.Length > 0)
-                {
-                    bytes.AddRange(data);
-                    length += byLength.Length + data.Length;
-                }
-                else
-                    length += byLength.Length;
+                    byson.AddRange(data);
             }
         }
         #endregion

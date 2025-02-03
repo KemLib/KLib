@@ -22,7 +22,6 @@
         }
         public float UnScaleDeltaTime => unscaleDeltaTime;
         public float DeltaTime => deltaTime;
-
         #endregion
 
         #region Construction
@@ -33,6 +32,9 @@
         #endregion
 
         #region Method
+        /// <summary>
+        /// Start is called at the beginning.
+        /// </summary>
         public void Start()
         {
             startTime = DateTime.Now;
@@ -43,6 +45,9 @@
             unscaleDeltaTime = 0;
             deltaTime = unscaleDeltaTime * ScaleDeltaTime;
         }
+        /// <summary>
+        /// Update is called every frame.
+        /// </summary>
         public void Update()
         {
             DateTime currentTime = DateTime.Now;
@@ -52,6 +57,9 @@
             deltaTime = unscaleDeltaTime * ScaleDeltaTime;
             frameTime = currentTime;
         }
+        /// <summary>
+        /// Stop is called at the ending.
+        /// </summary>
         public void Stop()
         {
             Update();

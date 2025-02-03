@@ -17,6 +17,9 @@ namespace KConcurrent.Queue
         private InterValueInt interCount;
 
         public bool IsAvailable => isAvailable;
+        /// <summary>
+        /// Gets the number of elements contained in the Queue<T>.
+        /// </summary>
         public int Count => interCount;
         #endregion
 
@@ -38,6 +41,9 @@ namespace KConcurrent.Queue
         #endregion
 
         #region Method
+        /// <summary>
+        /// Enable enqueue feature.
+        /// </summary>
         public void Active()
         {
             isAvailable.Exchange(true);
@@ -227,9 +233,8 @@ namespace KConcurrent.Queue
 
         #region Out Dequeue
         /// <summary>
-        /// 
+        /// Removes and returns the object at the beginning of the Queue<T>.
         /// </summary>
-        /// <returns></returns>
         /// <exception cref="Exception"></exception>
         /// <exception cref="ObjectDisposedException"></exception>
         public T Dequeue()
@@ -264,10 +269,8 @@ namespace KConcurrent.Queue
             return taskSource.Task.Result;
         }
         /// <summary>
-        /// 
+        /// Removes and returns the object at the beginning of the Queue<T>.
         /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         /// <exception cref="ObjectDisposedException"></exception>
         /// <exception cref="OperationCanceledException"></exception>
         public async Task<T> DequeueAsync(CancellationToken cancellationToken = default)
@@ -309,6 +312,9 @@ namespace KConcurrent.Queue
                 throw;
             }
         }
+        /// <summary>
+        /// Try removes and returns the object at the beginning of the Queue<T>.
+        /// </summary>
         public bool TryDequeue(out T? value)
         {
             if (!IsAvailable)
@@ -362,6 +368,9 @@ namespace KConcurrent.Queue
         #endregion
 
         #region Out Clear
+        /// <summary>
+        /// Removes all objects from the Queue<T>.
+        /// </summary>
         public T[] Clear()
         {
             Ticket ticket = lockObject.Wait();
@@ -383,6 +392,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Removes all objects from the Queue<T>.
+        /// </summary>
         public async Task<T[]> ClearAsync(CancellationToken cancellationToken = default)
         {
             Ticket ticket = await lockObject.WaitAsync(cancellationToken);
@@ -404,6 +416,9 @@ namespace KConcurrent.Queue
                 ticket.Release();
             }
         }
+        /// <summary>
+        /// Removes all objects from the Queue<T>.
+        /// </summary>
         public bool TryClear([NotNullWhen(true)] out T[]? values)
         {
             Ticket ticket = lockObject.Wait();

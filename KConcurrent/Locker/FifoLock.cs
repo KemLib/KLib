@@ -68,6 +68,9 @@
         #endregion
 
         #region Wait 
+        /// <summary>
+        /// Blocks the current thread until it can enter the FifoLock.
+        /// </summary>
         public bool Wait()
         {
             if (!TryEnqueue(out TaskCompletionSource<bool>? taskSource))
@@ -79,6 +82,9 @@
             taskSource.Task.Wait();
             return taskSource.Task.Result;
         }
+        /// <summary>
+        /// Asynchronously waits to enter the FifoLock.
+        /// </summary>
         public async Task<bool> WaitAsync()
         {
             if (!TryEnqueue(out TaskCompletionSource<bool>? taskSource))
@@ -90,7 +96,10 @@
             await taskSource.Task;
             return taskSource.Task.Result;
         }
-        public async Task<bool> WaitAsync(CancellationToken cancellationToken = default)
+        /// <summary>
+        /// Asynchronously waits to enter the FifoLock.
+        /// </summary>
+        public async Task<bool> WaitAsync(CancellationToken cancellationToken)
         {
             if (!TryEnqueue(out TaskCompletionSource<bool>? taskSource))
                 return false;
@@ -161,6 +170,9 @@
         #endregion
 
         #region Release
+        /// <summary>
+        /// Releases the FifoLock object.
+        /// </summary>
         public void Release()
         {
             if (IsDisposed)

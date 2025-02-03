@@ -14,9 +14,9 @@
         private const string TIME_CULTURE_INFO = "dd/MM/yyyy HH:mm:ss.fff";
 
         public readonly LogType Type;
-        public readonly string Source,
-            Message,
-            Title;
+        public readonly string Source;
+        public readonly string Message;
+        public readonly string Title;
         public readonly DateTime Time;
         #endregion
 

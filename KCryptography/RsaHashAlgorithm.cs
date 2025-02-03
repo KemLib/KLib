@@ -1,5 +1,8 @@
 ﻿namespace KCryptography
 {
+    /// <summary>
+    /// Specifies the name of a cryptographic hash algorithm.
+    /// </summary>
     public enum RsaHashAlgorithm
     {
         MD5,
