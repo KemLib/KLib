@@ -3,12 +3,12 @@
     public class Logger
     {
         #region Properties
-        private readonly Action<LogData> onLog;
+        private readonly Action<LogData>? onLog;
 
         #endregion
 
         #region Construction
-        public Logger(Action<LogData> onLog)
+        public Logger(Action<LogData>? onLog)
         {
             this.onLog = onLog;
         }
