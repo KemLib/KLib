@@ -15,11 +15,11 @@
         #endregion
 
         #region Method
-        public Logger? CreateLogger()
+        public virtual Logger? CreateLogger()
         {
             return new Logger(onLog);
         }
-        public void LogMessage(string? source = null, string? title = null, string? message = null)
+        public virtual void LogMessage(string? source = null, string? title = null, string? message = null)
         {
             LogData log = new(LogType.Message, source, title, message);
             try
@@ -31,7 +31,7 @@
 
             }
         }
-        public void LogWarning(string? source = null, string? title = null, string? message = null)
+        public virtual void LogWarning(string? source = null, string? title = null, string? message = null)
         {
             LogData log = new(LogType.Warning, source, title, message);
             try
@@ -43,7 +43,7 @@
 
             }
         }
-        public void LogError(string? source = null, string? title = null, string? message = null)
+        public virtual void LogError(string? source = null, string? title = null, string? message = null)
         {
             LogData log = new(LogType.Error, source, title, message);
             try
@@ -55,7 +55,7 @@
 
             }
         }
-        public void Log(LogData log)
+        public virtual void Log(LogData log)
         {
             try
             {
