@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System;
-using System.Threading;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace KLibStandard.Cryptography
@@ -12,7 +11,7 @@ namespace KLibStandard.Cryptography
         /// <summary>
         /// Cipher Algorithm Name.
         /// </summary>
-        public CipherName Algorithm
+        CipherName Algorithm
         {
             get;
         }
@@ -22,54 +21,54 @@ namespace KLibStandard.Cryptography
         /// <summary>
         /// Decrypts ciphertext.
         /// </summary>
-        public ResultDecrypt Decrypt(byte[] ciphertext);
+        ResultDecrypt Decrypt(byte[] ciphertext);
         /// <summary>
         /// Decrypts ciphertext.
         /// </summary>
-        public ResultDecrypt Decrypt(ReadOnlySpan<byte> ciphertext);
+        ResultDecrypt Decrypt(ReadOnlySpan<byte> ciphertext);
         /// <summary>
         /// Decrypts ciphertext.
         /// </summary>
-        public Task<ResultDecrypt> DecryptAsync(byte[] ciphertext);
+        Task<ResultDecrypt> DecryptAsync(byte[] ciphertext);
         /// <summary>
         /// Decrypts ciphertext.
         /// </summary>
-        public Task<ResultDecrypt> DecryptAsync(ReadOnlyMemory<byte> ciphertext);
+        Task<ResultDecrypt> DecryptAsync(ReadOnlyMemory<byte> ciphertext);
         /// <summary>
         /// Try decrypts ciphertext.
         /// </summary>
-        public bool TryDecrypt(byte[] ciphertext, [NotNullWhen(true)] out byte[] plaintext);
+        bool TryDecrypt(byte[] ciphertext, [NotNullWhen(true)] out byte[] plaintext);
         /// <summary>
         /// Try decrypts ciphertext.
         /// </summary>
-        public bool TryDecrypt(ReadOnlySpan<byte> ciphertext, [NotNullWhen(true)] out byte[] plaintext);
+        bool TryDecrypt(ReadOnlySpan<byte> ciphertext, [NotNullWhen(true)] out byte[] plaintext);
         #endregion
 
         #region Encrypt
         /// <summary>
         /// Encrypt plaintext.
         /// </summary>
-        public ResultEncrypt Encrypt(byte[] plaintext);
+        ResultEncrypt Encrypt(byte[] plaintext);
         /// <summary>
         /// Encrypt plaintext.
         /// </summary>
-        public ResultEncrypt Encrypt(ReadOnlySpan<byte> plaintext);
+        ResultEncrypt Encrypt(ReadOnlySpan<byte> plaintext);
         /// <summary>
         /// Encrypt plaintext.
         /// </summary>
-        public Task<ResultEncrypt> EncryptAsync(byte[] plaintext);
+        Task<ResultEncrypt> EncryptAsync(byte[] plaintext);
         /// <summary>
         /// Encrypt plaintext.
         /// </summary>
-        public Task<ResultEncrypt> EncryptAsync(ReadOnlyMemory<byte> plaintext);
+        Task<ResultEncrypt> EncryptAsync(ReadOnlyMemory<byte> plaintext);
         /// <summary>
         /// Try encrypt plaintext.
         /// </summary>
-        public bool TryEncrypt(byte[] plaintext, [NotNullWhen(true)] out byte[] ciphertext);
+        bool TryEncrypt(byte[] plaintext, [NotNullWhen(true)] out byte[] ciphertext);
         /// <summary>
         /// Try encrypt plaintext.
         /// </summary>
-        public bool TryEncrypt(ReadOnlySpan<byte> plaintext, [NotNullWhen(true)] out byte[] ciphertext);
+        bool TryEncrypt(ReadOnlySpan<byte> plaintext, [NotNullWhen(true)] out byte[] ciphertext);
         #endregion
     }
 }

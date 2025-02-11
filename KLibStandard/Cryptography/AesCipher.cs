@@ -332,7 +332,7 @@ namespace KLibStandard.Cryptography
                 }
                 return new ResultEncrypt(msEncrypt.ToArray());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ResultEncrypt(ex.Message);
             }

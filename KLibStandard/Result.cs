@@ -26,8 +26,8 @@
         {
             return new Result(true, string.Empty);
         }
-        public static Result Failure(string error) 
-        { 
+        public static Result Failure(string error)
+        {
             return new Result(false, error);
         }
         #endregion

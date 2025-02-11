@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace KLibStandard.Concurrent.Queue
 {
@@ -11,7 +8,7 @@ namespace KLibStandard.Concurrent.Queue
         /// <summary>
         /// Queue available to be Enqueue.
         /// </summary>
-        public bool IsAvailable
+        bool IsAvailable
         {
             get;
         }
@@ -21,23 +18,23 @@ namespace KLibStandard.Concurrent.Queue
         /// <summary>
         /// Disable enqueue feature.
         /// </summary>
-        public void Disable();
+        void Disable();
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public void Enqueue(T value);
+        void Enqueue(T value);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public Task EnqueueAsync(T value);
+        Task EnqueueAsync(T value);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public bool TryEnqueue(T value);
+        bool TryEnqueue(T value);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public Task<bool> TryEnqueueAsync(T value);
+        Task<bool> TryEnqueueAsync(T value);
         #endregion
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KLibStandard.Cryptography
+﻿namespace KLibStandard.Cryptography
 {
     public readonly struct ResultDecrypt : IResult
     {
@@ -17,7 +11,7 @@ namespace KLibStandard.Cryptography
 
         public bool IsSuccess => isSuccess;
         public string ErrorMessage => errorMessage;
-        public byte[] CipherText => plaintext;
+        public byte[] Plaintext => plaintext;
         #endregion
 
         #region Construction
