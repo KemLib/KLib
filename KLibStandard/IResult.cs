@@ -3,13 +3,13 @@
     public interface IResult
     {
         #region Properties
-        public const string ERROR_MESSAGE_UNKNOWN = "Unknown";
+        const string ERROR_MESSAGE_UNKNOWN = "Unknown";
 
-        public bool IsSuccess
+        bool IsSuccess
         {
             get;
         }
-        public string ErrorMessage
+        string ErrorMessage
         {
             get;
         }

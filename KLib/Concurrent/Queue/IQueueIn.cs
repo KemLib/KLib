@@ -6,7 +6,7 @@
         /// <summary>
         /// Queue available to be Enqueue.
         /// </summary>
-        public bool IsAvailable
+        bool IsAvailable
         {
             get;
         }
@@ -16,23 +16,23 @@
         /// <summary>
         /// Disable enqueue feature.
         /// </summary>
-        public void Disable();
+        void Disable();
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public void Enqueue(T value);
+        void Enqueue(T value);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public Task EnqueueAsync(T value, CancellationToken cancellationToken = default);
+        Task EnqueueAsync(T value, CancellationToken cancellationToken = default);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public bool TryEnqueue(T value);
+        bool TryEnqueue(T value);
         /// <summary>
         /// Adds an object to the end of the Queue<T>.
         /// </summary>
-        public Task<bool> TryEnqueueAsync(T value, CancellationToken cancellationToken = default);
+        Task<bool> TryEnqueueAsync(T value, CancellationToken cancellationToken = default);
         #endregion
     }
 }
