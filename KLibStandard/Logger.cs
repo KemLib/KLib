@@ -17,11 +17,11 @@ namespace KLibStandard
         #endregion
 
         #region Method
-        public Logger CreateLogger()
+        public virtual Logger CreateLogger()
         {
             return new Logger(onLog);
         }
-        public void LogMessage(string source = null, string title = null, string message = null)
+        public virtual void LogMessage(string source = null, string title = null, string message = null)
         {
             LogData log = new LogData(LogType.Message, source, title, message);
             try
@@ -33,7 +33,7 @@ namespace KLibStandard
 
             }
         }
-        public void LogWarning(string source = null, string title = null, string message = null)
+        public virtual void LogWarning(string source = null, string title = null, string message = null)
         {
             LogData log = new LogData(LogType.Warning, source, title, message);
             try
@@ -45,7 +45,7 @@ namespace KLibStandard
 
             }
         }
-        public void LogError(string source = null, string title = null, string message = null)
+        public virtual void LogError(string source = null, string title = null, string message = null)
         {
             LogData log = new LogData(LogType.Error, source, title, message);
             try
@@ -57,7 +57,7 @@ namespace KLibStandard
 
             }
         }
-        public void Log(LogData log)
+        public virtual void Log(LogData log)
         {
             try
             {
