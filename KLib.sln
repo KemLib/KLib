@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLib", "KLib\KLib.csproj", "{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KConcurrent", "KConcurrent\KConcurrent.csproj", "{D5F23A1A-84E7-4858-8AD1-E09B0A13AB5F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KCryptography", "KCryptography\KCryptography.csproj", "{AD20857F-175B-4906-80EE-80B2C1E0F998}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +15,6 @@ Global
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5F23A1A-84E7-4858-8AD1-E09B0A13AB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5F23A1A-84E7-4858-8AD1-E09B0A13AB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5F23A1A-84E7-4858-8AD1-E09B0A13AB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5F23A1A-84E7-4858-8AD1-E09B0A13AB5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD20857F-175B-4906-80EE-80B2C1E0F998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD20857F-175B-4906-80EE-80B2C1E0F998}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD20857F-175B-4906-80EE-80B2C1E0F998}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD20857F-175B-4906-80EE-80B2C1E0F998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
