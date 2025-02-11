@@ -26,11 +26,16 @@
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+using System;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.IO;
 
-namespace KLib.Json
+namespace KLibStandard.Json
 {
     public static class MiniJson
     {
@@ -96,14 +101,14 @@ namespace KLib.Json
         /// </summary>
         /// <param name="json">A JSON string.</param>
         /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
-        public static object? Deserialize(string json)
+        public static object Deserialize(string json)
         {
             // save the string for debug information
             if (string.IsNullOrEmpty(json))
                 return null;
             //
-            object? value;
-            using (StringReader reader = new(json))
+            object value;
+            using (StringReader reader = new StringReader(json))
             {
                 value = ParseValue(reader);
             }
@@ -114,7 +119,7 @@ namespace KLib.Json
         /// </summary>
         /// <param name="json">A JSON string.</param>
         /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
-        public static bool TryDeserialize(string json, [NotNullWhen(true)] out object? value)
+        public static bool TryDeserialize(string json, [NotNullWhen(true)] out object value)
         {
             // save the string for debug information
             if (string.IsNullOrEmpty(json))
@@ -123,7 +128,7 @@ namespace KLib.Json
                 return false;
             }
             //
-            using (StringReader reader = new(json))
+            using (StringReader reader = new StringReader(json))
             {
                 value = ParseValue(reader);
             }
@@ -137,21 +142,20 @@ namespace KLib.Json
         /// <param name="pretty">A boolean to indicate whether or not JSON should be prettified, default is false.</param>
         /// <param name="indentText">A string to ibe used as indentText, default is 2 spaces.</param>
         /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
-        public static string Serialize(object? obj, bool pretty = DEFAULT_PRETTY, string indentText = DEFAULT_INDENT_TEXT)
+        public static string Serialize(object obj, bool pretty = DEFAULT_PRETTY, string indentText = DEFAULT_INDENT_TEXT)
         {
             if (obj == null)
                 return DEFAULT_JSON;
             //
-            StringBuilder builder = new();
+            StringBuilder builder = new StringBuilder();
             SerializeValue(builder, pretty, indentText, obj, 0);
             return builder.ToString();
         }
         #endregion
-
         #region Deserialize
-        private static Dictionary<string, object?>? ParseObject(StringReader reader)
+        private static Dictionary<string, object> ParseObject(StringReader reader)
         {
-            Dictionary<string, object?> table = [];
+            Dictionary<string, object> table = new Dictionary<string, object>();
 
             // ditch opening brace
             reader.Read();
@@ -189,9 +193,9 @@ namespace KLib.Json
                 }
             }
         }
-        private static List<object?>? ParseArray(StringReader reader)
+        private static List<object> ParseArray(StringReader reader)
         {
-            List<object?> array = [];
+            List<object> array = new List<object>();
 
             // ditch opening bracket
             reader.Read();
@@ -212,7 +216,7 @@ namespace KLib.Json
                         parsing = false;
                         break;
                     default:
-                        object? value = ParseByToken(reader, nextToken);
+                        object value = ParseByToken(reader, nextToken);
 
                         array.Add(value);
                         break;
@@ -221,12 +225,12 @@ namespace KLib.Json
 
             return array;
         }
-        private static object? ParseValue(StringReader reader)
+        private static object ParseValue(StringReader reader)
         {
             TOKEN nextToken = NextToken(reader);
             return ParseByToken(reader, nextToken);
         }
-        private static object? ParseByToken(StringReader reader, TOKEN token)
+        private static object ParseByToken(StringReader reader, TOKEN token)
         {
             return token switch
             {
@@ -242,7 +246,7 @@ namespace KLib.Json
         }
         private static string ParseString(StringReader reader)
         {
-            StringBuilder s = new();
+            StringBuilder s = new StringBuilder();
             char c;
 
             // ditch opening quote
@@ -346,7 +350,7 @@ namespace KLib.Json
         }
         private static string NextWord(StringReader reader)
         {
-            StringBuilder word = new();
+            StringBuilder word = new StringBuilder();
 
             while (!IsWordBreak(PeekChar(reader)))
             {
@@ -417,7 +421,7 @@ namespace KLib.Json
         #endregion
 
         #region Serializer
-        private static void SerializeValue(StringBuilder builder, bool pretty, string indentText, object? value, int indent)
+        private static void SerializeValue(StringBuilder builder, bool pretty, string indentText, object value, int indent)
         {
 
             if (value == null || value is Delegate)
@@ -462,7 +466,7 @@ namespace KLib.Json
             }
 
             bool first = true;
-            string? indentLine = null;
+            string indentLine = null;
 
             builder.Append(CHAR_DICTINARY_OPEN);
             if (pretty)
@@ -473,7 +477,7 @@ namespace KLib.Json
 
             foreach (object key in obj.Keys)
             {
-                string? strKey = key.ToString();
+                string strKey = key.ToString();
                 if (strKey == null)
                     continue;
                 //
@@ -516,7 +520,7 @@ namespace KLib.Json
             }
 
             bool first = true;
-            string? indentLine = null;
+            string indentLine = null;
 
             builder.Append(CHAR_ARRAY_OPEN);
             if (pretty)
@@ -617,11 +621,11 @@ namespace KLib.Json
             }
             else
             {
-                Dictionary<string, object?> map = [];
-                List<FieldInfo> fields = [.. value.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public)];
+                Dictionary<string, object> map = new Dictionary<string, object>();
+                List<FieldInfo> fields = new List<FieldInfo>(value.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public));
                 foreach (FieldInfo field in fields)
                     map.Add(field.Name, field.GetValue(value));
-                List<PropertyInfo> properties = [.. value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public)];
+                List<PropertyInfo> properties = new List<PropertyInfo>(value.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public));
                 foreach (PropertyInfo property in properties)
                     map.Add(property.Name, property.GetValue(value, null));
                 SerializeObject(builder, pretty, indentText, map, indent);

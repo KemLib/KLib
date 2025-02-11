@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLib", "KLib\KLib.csproj", "{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KLibStandard", "KLibStandard\KLibStandard.csproj", "{DE215BF3-34D9-41B4-A9B8-8827FE8B4DAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01537070-1E87-4D3D-97DC-BBAF3FCAD1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE215BF3-34D9-41B4-A9B8-8827FE8B4DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE215BF3-34D9-41B4-A9B8-8827FE8B4DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE215BF3-34D9-41B4-A9B8-8827FE8B4DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE215BF3-34D9-41B4-A9B8-8827FE8B4DAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
